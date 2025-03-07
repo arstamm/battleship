@@ -1,1 +1,0 @@
-/Users/andrew/Documents/byu_idaho/Semesters/2025_winter/04_cse310/04_Sprint/battleship/cargo/target/debug/cargo: /Users/andrew/Documents/byu_idaho/Semesters/2025_winter/04_cse310/04_Sprint/battleship/cargo/src/main.rs
