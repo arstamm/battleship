@@ -38,4 +38,12 @@ fn place_ship(grid: &mut [[u8; GRID_SIZE]; GRID_SIZE]) {
 
 fn check_guess(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
     grid[row][col] == 1
+    if grid[row][col] == 0 {
+        println!("Miss!");
+        grid[row][col] += 2; // Mark as missed
+    } 
+    elif grid[row][col] == 1 {
+        println!("Hit!");
+        grid[row][col] += 2; // Mark as hit
+    }
 }
