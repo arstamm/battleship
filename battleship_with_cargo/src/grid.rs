@@ -1,5 +1,5 @@
 use std::io;
-mod enemy;
+use enemy;
 
 fn main() {
     let mut grid: [[i32; 10]; 10] = [[0; 10]; 10];
@@ -28,7 +28,7 @@ fn print_grid(grid: &[[i32; 10]; 10]) {
 }
 
 // Function to get user input
-fn get_user_input() -> (usize, usize, i32) {
+pub fn get_user_input() -> (usize, usize, i32) {
     let mut input = String::new();
 
     println!("\nEnter row (A-J):");
