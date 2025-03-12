@@ -1,7 +1,7 @@
 use rand::Rng;
 use std::io;
-mod main;
-use main::get_user_input;
+mod grid;
+use grid::get_user_input;
 
 const GRID_SIZE: usize = 10;
 

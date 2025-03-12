@@ -1,4 +1,5 @@
 use std::io;
+mod enemy;
 
 fn main() {
     let mut grid: [[i32; 10]; 10] = [[0; 10]; 10];
