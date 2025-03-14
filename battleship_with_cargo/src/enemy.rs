@@ -1,9 +1,10 @@
 use rand::Rng;
 use std::io;
+mod grid::get_user_input;
 
 const GRID_SIZE: usize = 10;
 
-fn main() {
+pub fn main_enemy() {
     let mut grid = create_grid();
     place_ship(&mut grid);
 
@@ -23,17 +24,25 @@ fn main() {
     }
 }
 
-fn create_grid() -> [[u8; GRID_SIZE]; GRID_SIZE] {
-    [[0; GRID_SIZE]; GRID_SIZE]
+pub fn create_grid() -> [[u8; GRID_SIZE]; GRID_SIZE] {
+    [[0; GRID_SIZE]; GRID_SIZE];
 }
 
-fn place_ship(grid: &mut [[u8; GRID_SIZE]; GRID_SIZE]) {
+pub fn place_ship(grid: &mut [[u8; GRID_SIZE]; GRID_SIZE]) {
     let mut rng = rand::thread_rng();
     let row = rng.gen_range(0..GRID_SIZE);
     let col = rng.gen_range(0..GRID_SIZE);
     grid[row][col] = 1;
 }
 
-fn check_guess(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
-    grid[row][col] == 1
+pub fn check_guess(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
+    grid[row][col] == 1;
+    if grid[row][col] == 0 {
+        println!("Miss!");
+        grid[row][col] += 2; // Mark as missed
+    } 
+    else if grid[row][col] == 1 {
+        println!("Hit!");
+        grid[row][col] += 2; // Mark as hit
+    }
 }
