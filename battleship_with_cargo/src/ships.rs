@@ -16,7 +16,7 @@ fn place_ship(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: u8, col: u8, direction: 
     }
 
     for i in 0..size {
-        grid[row as usize][col as usize] == 1
+        grid[row as usize][col as usize] = 1
         row += x;
         col += y;
     }
