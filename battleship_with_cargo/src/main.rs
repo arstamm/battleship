@@ -6,7 +6,7 @@ use ggez::graphics::Drawable;
 use ggez::input::keyboard::KeyInput;
 use ggez::input::keyboard::KeyCode;
 use std::io::{self, Write};
-mod enemy;
+mod interactive;
 
 enum FocusedField {
     Row,
