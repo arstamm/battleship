@@ -46,3 +46,22 @@ pub fn check_guess_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: u
         grid[row][col] += 2; // Mark as hit
     }
 }
+
+fn ai_attack(grid: &mut [[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
+    let mut rng = rand::thread_rng();
+    let (mut row, mut col);
+
+    // Ensure AI does not attack the same spot twice
+    loop {
+        row = rng.gen_range(0..GRID_SIZE);
+        col = rng.gen_range(0..GRID_SIZE);
+
+        if !grid[row][col] {
+            grid[row][col] = true; // Mark as attacked
+            break;
+        }
+    }
+
+    println!("AI attacks row {} and column {}!", row, col);
+    (row, col, grid[row][col]) // Return attack position and result
+}
