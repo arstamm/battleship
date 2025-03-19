@@ -1,7 +1,7 @@
 const GRID_SIZE: usize = 10;
 
 fn place_ship(
-    grid: &mut [[u8; GRID_SIZE]; GRID_SIZE], row: u8, col: u8, direction: u8, size: u8,) -> Result<(), &'static str> {
+    grid: &mut [[usize; GRID_SIZE]; GRID_SIZE], row: usize, col: usize, direction: usize, size: usize,) -> Result<(), &'static str> {
     // Define the direction vectors
     let (dx, dy) = match direction {
         0 => (-1, 0),  // Up
@@ -13,12 +13,12 @@ fn place_ship(
 
     // Collect the coordinates
     let mut coordinates = Vec::new();
-    let mut current_row = row as i32;
-    let mut current_col = col as i32;
+    let mut current_row = row as usize;
+    let mut current_col = col as usize;
 
     for _ in 0..size {
         // Check if the coordinates are within bounds
-        if current_row < 0 || current_row >= GRID_SIZE as i32 || current_col < 0 || current_col >= GRID_SIZE as i32 {
+        if current_row < 0 || current_row >= GRID_SIZE as usize || current_col < 0 || current_col >= GRID_SIZE as usize {
             return Err("Ship placement out of bounds");
         }
         // Check if the cell is empty
