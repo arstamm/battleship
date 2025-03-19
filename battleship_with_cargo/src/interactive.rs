@@ -1,3 +1,4 @@
+// luke hill
 use rand::Rng;
 use std::io;
 mod main::apply_input;
