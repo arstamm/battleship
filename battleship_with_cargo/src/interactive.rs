@@ -8,7 +8,7 @@ const GRID_SIZE: usize = 10;
 pub fn main_enemy() {
     let mut grid = create_grid();
     let mut ai_grid = [[false; GRID_SIZE]; GRID_SIZE]; // Track AI attacks
-    place_ship(&mut grid);
+    place_ship_enemy(&mut grid);
 
     println!("Welcome to Battleship!");
     
@@ -56,18 +56,6 @@ pub fn check_guess_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: u
         true
     }
 }
-
-// pub fn check_guess_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
-//     grid[row][col] == 1;
-//     if grid[row][col] == 0 {
-//         grid[row][col] += 2; // Mark as missed
-//         true
-//     } 
-//     else if grid[row][col] == 1 {
-//         grid[row][col] += 2; // Mark as hit
-//         false
-//     }
-// }
 
 fn ai_attack(grid: &mut [[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
     let mut rng = rand::thread_rng();
