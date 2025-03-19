@@ -1,7 +1,7 @@
 const GRID_SIZE: usize = 10;
 
 fn place_ship(
-    grid: &mut [[u8; GRID_SIZE]; GRID_SIZE], row: u8, col: u8, direction: u8, size: u8,){
+    grid: &mut [[u8; GRID_SIZE]; GRID_SIZE], row: u8, col: u8, direction: u8, size: u8,) -> Result<(), &'static str> {
     // Define the direction vectors
     let (dx, dy) = match direction {
         0 => (-1, 0),  // Up
@@ -36,4 +36,6 @@ fn place_ship(
     for &(r, c) in &coordinates {
         grid[r][c] = 1;
     }
+
+    Ok(())
 }
