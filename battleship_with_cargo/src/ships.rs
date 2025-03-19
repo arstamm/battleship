@@ -1,6 +1,6 @@
 const GRID_SIZE: usize = 10;
 
-fn place_ship(
+pub fn place_ship(
     grid: &mut [[usize; GRID_SIZE]; GRID_SIZE], row: usize, col: usize, direction: usize, size: usize,) -> Result<(), &'static str> {
     // Define the direction vectors
     let (dx, dy) = match direction {
