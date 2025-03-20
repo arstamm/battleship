@@ -6,14 +6,14 @@ use crate::gameplay::GridApp;
 const GRID_SIZE: usize = 10;
 
 pub fn main_enemy() {
+    let mut app = GridApp::new(); // Create an instance of GridApp
     let mut grid = create_grid();
     let mut ai_grid = [[false; GRID_SIZE]; GRID_SIZE]; // Track AI attacks
-    place_ship_enemy(&mut grid);
+    place_ship_enemy(grid: app::grid2);
 
     println!("Welcome to Battleship!");
     
     let mut attempts = 0;
-    let mut app = GridApp::new(); // Create an instance of GridApp
     loop {
         let (row, col) = app.apply_input();
         attempts += 1;
@@ -34,30 +34,30 @@ pub fn main_enemy() {
     }
 }
 
-pub fn create_grid() -> [[usize; GRID_SIZE]; GRID_SIZE] {
-    [[0; GRID_SIZE]; GRID_SIZE]
-}
+// pub fn create_grid() -> [[usize; GRID_SIZE]; GRID_SIZE] {
+//     [[0; GRID_SIZE]; GRID_SIZE]
+// }
 
-pub fn place_ship_enemy(grid: &mut [[usize; GRID_SIZE]; GRID_SIZE]) {
+pub fn place_ship_enemy(grid: app::grid2 &mut [[usize; GRID_SIZE]; GRID_SIZE]) {
     let mut rng = rand::thread_rng();
     let row = rng.gen_range(0..GRID_SIZE);
     let col = rng.gen_range(0..GRID_SIZE);
-    grid[row][col] = 1;
+    grid: app::grid2[row][col] = 1;
 }
 
-pub fn check_guess_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
-    grid[row][col] == 1;
-    if grid[row][col] == 0 {
-        grid[row][col] += 2; // Mark as missed
+pub fn check_guess_enemy(grid: app::grid2 &[[usize; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
+    grid: app::grid2[row][col] == 1;
+    if grid: app::grid2[row][col] == 0 {
+        grid: app::grid2[row][col] += 2; // Mark as missed
         false
     } 
-    else if grid[row][col] == 1 {
-        grid[row][col] += 2; // Mark as hit
+    else if grid: app::grid2[row][col] == 1 {
+        grid: app::grid2[row][col] += 2; // Mark as hit
         true
     }
 }
 
-fn ai_attack(grid: &mut [[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
+fn ai_attack(grid: app::grid2 &mut [[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
     let mut rng = rand::thread_rng();
     let (mut row, mut col);
 
@@ -66,12 +66,12 @@ fn ai_attack(grid: &mut [[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) 
         row = rng.gen_range(0..GRID_SIZE);
         col = rng.gen_range(0..GRID_SIZE);
 
-        if !grid[row][col] {
-            grid[row][col] > 1; // Mark as attacked
+        if !grid: app::grid2[row][col] {
+            grid: app::grid2[row][col] > 1; // Mark as attacked
             break;
         }
     }
 
     println!("AI attacks row {} and column {}!", row, col);
-    (row, col, grid[row][col]) // Return attack position and result
+    (row, col, grid: app::grid2[row][col]) // Return attack position and result
 }
