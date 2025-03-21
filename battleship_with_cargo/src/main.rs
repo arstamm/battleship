@@ -1,6 +1,6 @@
 use ggez::{Context, ContextBuilder, GameResult};
 use ggez::event::{self, EventHandler};
-use ggez::graphics::{self, Canvas, Color, DrawParam, Text, TextFragment, Rect};
+// use ggez::graphics::{self, Canvas, Color, DrawParam, Text, TextFragment, Rect};
 use ggez::input::mouse::MouseButton;
 use ggez::input::keyboard::{KeyInput, KeyCode};
 use crate::gameplay::{GridApp, FocusedField};
@@ -123,6 +123,7 @@ impl EventHandler for GridApp {
 }
 
 fn main() -> GameResult {
+    println!("Hello World");
     let (ctx, event_loop) = ContextBuilder::new("grid_app", "Author")
         .build()
         .expect("Failed to build ggez context");
