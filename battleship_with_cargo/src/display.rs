@@ -1,6 +1,7 @@
 use ggez::{Context, GameResult};
-use ggez::graphics::{self, Canvas, Color, DrawParam, Text, TextFragment};
+use ggez::graphics::{Canvas, Color, DrawParam, Text, TextFragment};
 use crate::gameplay::GridApp;
+use crate::constants::GRID_SIZE;
 
 impl GridApp {
     pub fn draw_grids(&self, ctx: &mut Context, canvas: &mut Canvas) {
@@ -8,7 +9,7 @@ impl GridApp {
         self.draw_grid(ctx, canvas, &self.grid2, "Grid 2", 300.0);
     }
 
-    fn draw_grid(&self, ctx: &mut Context, canvas: &mut Canvas, grid: &[[usize; 10]; 10], title: &str, x_offset: f32) {
+    fn draw_grid(&self, _ctx: &mut Context, canvas: &mut Canvas, grid: &[[u8; GRID_SIZE]; GRID_SIZE], title: &str, x_offset: f32) { // Warning: Usued Context (Ignore this for now)
         let title_text = Text::new(TextFragment::new(title).scale(20.0).color(Color::from_rgb(0, 0, 0)));
         canvas.draw(&title_text, DrawParam::default().dest([x_offset, 0.0]));
         

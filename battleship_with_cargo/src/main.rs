@@ -7,9 +7,10 @@ use crate::gameplay::{GridApp, FocusedField};
 mod interactive;
 mod gameplay;
 mod display;
+mod constants;
 
 impl EventHandler for GridApp {
-    fn update(&mut self, ctx: &mut Context) -> GameResult {
+    fn update(&mut self, ctx: &mut Context) -> GameResult { // Infinite Recusion is happening here. This may be causing a stack overflow error.
         self.update(ctx)
     }
 

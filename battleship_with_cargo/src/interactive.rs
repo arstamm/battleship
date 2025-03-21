@@ -2,8 +2,7 @@
 use rand::Rng;
 // use std::io;
 use crate::gameplay::GridApp;
-
-const GRID_SIZE: usize = 10;
+use crate::constants::GRID_SIZE;
 
 pub fn main_enemy() {
     let app = GridApp::new(); // Create an instance of GridApp

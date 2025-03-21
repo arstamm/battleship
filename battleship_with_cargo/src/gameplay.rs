@@ -1,4 +1,4 @@
-use ggez::{Context, GameResult};
+use crate::constants::GRID_SIZE;
 
 pub enum FocusedField {
     Row,
@@ -7,8 +7,8 @@ pub enum FocusedField {
 }
 
 pub struct GridApp {
-    pub grid1: [[usize; 10]; 10],
-    pub grid2: [[usize; 10]; 10],
+    pub grid1: [[u8; GRID_SIZE]; GRID_SIZE],
+    pub grid2: [[u8; GRID_SIZE]; GRID_SIZE],
     pub input_mode: bool,
     pub row_input: String,
     pub col_input: String,
@@ -19,8 +19,8 @@ pub struct GridApp {
 impl GridApp {
     pub fn new() -> Self {
         GridApp {
-            grid1: [[0; 10]; 10],
-            grid2: [[0; 10]; 10],
+            grid1: [[0; GRID_SIZE]; GRID_SIZE],
+            grid2: [[0; GRID_SIZE]; GRID_SIZE],
             input_mode: false,
             row_input: String::new(),
             col_input: String::new(),
@@ -35,15 +35,15 @@ impl GridApp {
     // }
 
     pub fn reset(&mut self) {
-        self.grid1 = [[0; 10]; 10];
-        self.grid2 = [[0; 10]; 10];
+        self.grid1 = [[0; GRID_SIZE]; GRID_SIZE];
+        self.grid2 = [[0; GRID_SIZE]; GRID_SIZE];
         self.input_mode = false;
         self.row_input.clear();
         self.col_input.clear();
         self.value_input.clear();
     }
 
-    pub fn apply_input(&mut self) -> (usize, usize) {
+    pub fn apply_input(&mut self) -> (u8, u8) {
         let row = match self.row_input.trim().to_uppercase().as_str() {
             "A" => 0, "B" => 1, "C" => 2, "D" => 3, "E" => 4,
             "F" => 5, "G" => 6, "H" => 7, "I" => 8, "J" => 9,
@@ -53,8 +53,8 @@ impl GridApp {
             }
         };
     
-        let col: usize = match self.col_input.trim().parse() {
-            Ok(n) if (1..=10).contains(&n) => (n - 1) as usize,
+        let col: u8 = match self.col_input.trim().parse() {
+            Ok(n) if (1..=GRID_SIZE).contains(&n) => (n - 1) as u8,
             _ => {
                 println!("Invalid column: {}", self.col_input);
                 return (0, 0); // Return a default value or handle the error appropriately
@@ -75,7 +75,7 @@ impl GridApp {
     //     };
     
     //     let col: usize = match self.col_input.trim().parse() {
-    //         Ok(n) if (1..=10).contains(&n) => (n - 1) as usize,
+    //         Ok(n) if (1..=GRID_SIZE).contains(&n) => (n - 1) as usize,
     //         _ => {
     //             println!("Invalid column: {}", self.col_input);
     //             return;
@@ -108,14 +108,14 @@ impl GridApp {
     }
 }
 
-struct gameplay {
+struct Gameplay {
     // Grid One
 
     // Grid Two
 
 }
 
-impl gameplay {
+impl Gameplay {
     // Part One: Place ships
 
 
