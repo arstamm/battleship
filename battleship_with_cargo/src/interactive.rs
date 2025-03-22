@@ -1,14 +1,15 @@
 // luke hill
 use rand::Rng;
 // use std::io;
-use crate::gameplay::GridApp;
 use crate::constants::GRID_SIZE;
 
-pub fn main_enemy() {
-    let app = GridApp::new(); // Create an instance of GridApp
+pub fn handle_interaction(home_grid: &[[u8; GRID_SIZE]; GRID_SIZE], enemy_grid: &[[u8; GRID_SIZE]; GRID_SIZE]) {
+    // let app = GridApp::new(); // Create an instance of GridApp
     // let mut grid = create_grid();
-    let mut ai_grid: [[bool; GRID_SIZE]; GRID_SIZE] = [[false; GRID_SIZE]; GRID_SIZE]; // Track AI attacks
-    place_ship_enemy(&app.grid1);
+    // let mut ai_grid: [[bool; GRID_SIZE]; GRID_SIZE] = [[false; GRID_SIZE]; GRID_SIZE]; // Track AI attacks
+
+
+    place_ship_enemy(enemy_grid);
 
     println!("Welcome to Battleship!");
     
@@ -37,26 +38,29 @@ pub fn main_enemy() {
 //     [[0; GRID_SIZE]; GRID_SIZE]
 // }
 
-pub fn place_ship_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE]) {
+pub fn place_ship_enemy(grid: &mut [[u8; GRID_SIZE]; GRID_SIZE]) {
     let mut rng = rand::thread_rng();
     let row = rng.gen_range(0..GRID_SIZE);
     let col = rng.gen_range(0..GRID_SIZE);
     grid[row][col] = 1;
 }
 
-pub fn check_guess_enemy(grid: &[[u8; GRID_SIZE]; GRID_SIZE], row: u8, col: u8) -> bool {
-    app::grid2[row][col] == 1;
-    if grid: app::grid2[row][col] == 0 {
-        grid: app::grid2[row][col] += 2; // Mark as missed
+pub fn check_guess_enemy(grid: &mut [[u8; GRID_SIZE]; GRID_SIZE], row: usize, col: usize) -> bool {
+    // grid[row][col] == 1;
+    if grid[row][col] == 0 {
+        grid[row][col] += 2; // Mark as missed
         false
     } 
-    else if grid: app::grid2[row][col] == 1 {
-        grid: app::grid2[row][col] += 2; // Mark as hit
+    else if grid[row][col] == 1 {
+        grid[row][col] += 2; // Mark as hit
         true
+    } else {
+        // Already Guessed, try again.
+        false
     }
 }
 
-fn ai_attack(grid: &[[bool; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
+fn ai_attack(grid: &[[u8; GRID_SIZE]; GRID_SIZE]) -> (usize, usize, bool) {
     let mut rng = rand::thread_rng();
     let (mut row, mut col);
 

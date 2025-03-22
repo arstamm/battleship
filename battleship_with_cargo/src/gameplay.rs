@@ -113,14 +113,44 @@ struct Gameplay {
 
     // Grid Two
 
+    app: GridApp,
+
 }
 
 impl Gameplay {
     // Part One: Place ships
+    pub fn new() {
+
+    }
+
+    // Player one Places ships
+
+    // Player two places ships
 
 
 
     // Part Two: While true takes a turn
+
+    // loop {
+    //     let (row, col) = app.apply_input();
+    //     attempts += 1;
+
+    //     if check_guess_enemy(&app.grid1, row, col) {
+    //         println!("Hit! You sunk the battleship in {} attempts!", attempts);
+    //         break;
+    //     } else {
+    //         println!("Miss! Try again.");
+    //     }
+    // }
+
+    // let (ai_row, ai_col, hit) = ai_attack(&ai_grid);
+    // if grid[ai_row][ai_col] == true{
+    //     println!("AI hit your ship at row {} and column {}!", ai_row, ai_col);
+    // } else {
+    //     println!("AI missed at row {} and column {}!", ai_row, ai_col);
+    // }
+
+    
 
 
 
