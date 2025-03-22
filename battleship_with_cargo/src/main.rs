@@ -1,134 +1,154 @@
-use ggez::{Context, ContextBuilder, GameResult};
-use ggez::event::{self, EventHandler};
-// use ggez::graphics::{self, Canvas, Color, DrawParam, Text, TextFragment, Rect};
-use ggez::input::mouse::MouseButton;
-use ggez::input::keyboard::{KeyInput, KeyCode};
-use crate::gameplay::{GridApp, FocusedField};
-mod interactive;
-mod gameplay;
-mod display;
-mod constants;
+use ggez::{Context, GameResult};
+use ggez::event::{self, EventHandler, MouseButton};
+use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Mesh};
+use ggez::mint::{Point2, Vector2};
 
-impl EventHandler for GridApp {
-    fn update(&mut self, ctx: &mut Context) -> GameResult { // Infinite Recusion is happening here. This may be causing a stack overflow error.
-        self.update(ctx)
+const GRID_SIZE: usize = 10;
+const CELL_SIZE: f32 = 40.0;
+const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
+
+#[derive(Clone, Copy, PartialEq)]
+enum CellState {
+    Empty,
+    Ship,
+    Hit,
+    Miss,
+}
+
+struct BattleshipGame {
+    player_grid: [[CellState; GRID_SIZE]; GRID_SIZE],
+    enemy_grid: [[CellState; GRID_SIZE]; GRID_SIZE],
+    player_turn: bool,
+    placing_ships: bool,
+    current_ship_index: usize,
+}
+
+impl BattleshipGame {
+    fn new() -> Self {
+        Self {
+            player_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            enemy_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            player_turn: false,
+            placing_ships: true,
+            current_ship_index: 0,
+        }
     }
 
-    fn key_down_event(
-        &mut self,
-        _ctx: &mut Context,
-        keyinput: KeyInput,
-        _repeat: bool,
-    ) -> GameResult {
-        if self.input_mode {
-            match keyinput.keycode {
-                Some(KeyCode::Back) => {
-                    match self.focused_field {
-                        FocusedField::Row => {
-                            self.row_input.pop();
-                        }
-                        FocusedField::Column => {
-                            self.col_input.pop();
-                        }
-                        FocusedField::Value => {
-                            self.value_input.pop();
-                        }
-                    }
-                    return Ok(());
+    fn place_ship(&mut self, row: usize, col: usize, size: usize, horizontal: bool) -> bool {
+        if self.can_place_ship(row, col, size, horizontal) {
+            for i in 0..size {
+                if horizontal {
+                    self.player_grid[row][col + i] = CellState::Ship;
+                } else {
+                    self.player_grid[row + i][col] = CellState::Ship;
                 }
-                Some(KeyCode::Return) => {
-                    self.apply_input();
-                    return Ok(());
-                }
-                Some(KeyCode::Tab) => {
-                    self.focused_field = match self.focused_field {
-                        FocusedField::Row => FocusedField::Column,
-                        FocusedField::Column => FocusedField::Value,
-                        FocusedField::Value => FocusedField::Row,
-                    };
-                    return Ok(());
-                }
-                Some(key) => {
-                    let char = match key {
-                        KeyCode::A => 'A',
-                        KeyCode::B => 'B',
-                        KeyCode::C => 'C',
-                        KeyCode::D => 'D',
-                        KeyCode::E => 'E',
-                        KeyCode::F => 'F',
-                        KeyCode::G => 'G',
-                        KeyCode::H => 'H',
-                        KeyCode::I => 'I',
-                        KeyCode::J => 'J',
-                        KeyCode::K => 'K',
-                        KeyCode::L => 'L',
-                        KeyCode::M => 'M',
-                        KeyCode::N => 'N',
-                        KeyCode::O => 'O',
-                        KeyCode::P => 'P',
-                        KeyCode::Q => 'Q',
-                        KeyCode::R => 'R',
-                        KeyCode::S => 'S',
-                        KeyCode::T => 'T',
-                        KeyCode::U => 'U',
-                        KeyCode::V => 'V',
-                        KeyCode::W => 'W',
-                        KeyCode::X => 'X',
-                        KeyCode::Y => 'Y',
-                        KeyCode::Z => 'Z',
-                        KeyCode::Key0 => '0',
-                        KeyCode::Key1 => '1',
-                        KeyCode::Key2 => '2',
-                        KeyCode::Key3 => '3',
-                        KeyCode::Key4 => '4',
-                        KeyCode::Key5 => '5',
-                        KeyCode::Key6 => '6',
-                        KeyCode::Key7 => '7',
-                        KeyCode::Key8 => '8',
-                        KeyCode::Key9 => '9',
-                        _ => return Ok(()),
-                    };
-
-                    match self.focused_field {
-                        FocusedField::Row => self.row_input.push(char),
-                        FocusedField::Column => self.col_input.push(char),
-                        FocusedField::Value => self.value_input.push(char),
-                    }
-                }
-                None => return Ok(()),
-            };
+            }
+            return true;
         }
+        false
+    }
 
+    fn can_place_ship(&self, row: usize, col: usize, size: usize, horizontal: bool) -> bool {
+        if horizontal {
+            if col + size > GRID_SIZE { return false; }
+            for i in 0..size {
+                if self.player_grid[row][col + i] != CellState::Empty {
+                    return false;
+                }
+            }
+        } else {
+            if row + size > GRID_SIZE { return false; }
+            for i in 0..size {
+                if self.player_grid[row + i][col] != CellState::Empty {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    fn handle_click(&mut self, x: f32, y: f32) {
+        let col = (x / CELL_SIZE) as usize;
+        let row = (y / CELL_SIZE) as usize;
+        if row < GRID_SIZE && col < GRID_SIZE {
+            if self.placing_ships {
+                if self.current_ship_index < SHIP_SIZES.len() {
+                    if self.place_ship(row, col, SHIP_SIZES[self.current_ship_index], true) {
+                        self.current_ship_index += 1;
+                        if self.current_ship_index >= SHIP_SIZES.len() {
+                            self.placing_ships = false;
+                            self.player_turn = true;
+                        }
+                    }
+                }
+            } else if self.player_turn {
+                match self.enemy_grid[row][col] {
+                    CellState::Ship => self.enemy_grid[row][col] = CellState::Hit,
+                    CellState::Empty => self.enemy_grid[row][col] = CellState::Miss,
+                    _ => return,
+                }
+                self.player_turn = false;
+            }
+        }
+    }
+}
+
+impl EventHandler for BattleshipGame {
+    fn update(&mut self, _ctx: &mut Context) -> GameResult {
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
-        self.render(ctx) // Call render instead of draw
+        let mut canvas = graphics::Canvas::from_frame(ctx, Color::WHITE);
+        let mut mesh_builder = MeshBuilder::new();
+        
+        for row in 0..GRID_SIZE {
+            for col in 0..GRID_SIZE {
+                let x = col as f32 * CELL_SIZE;
+                let y = row as f32 * CELL_SIZE;
+                let color = match self.player_grid[row][col] {
+                    CellState::Ship => Color::GREEN,
+                    _ => Color::BLUE,
+                };
+                
+                // Draw cell background
+                canvas.draw(
+                    &graphics::Quad,
+                    graphics::DrawParam::new()
+                        .dest(Point2 { x, y })
+                        .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE })
+                        .color(color),
+                );
+                
+                // Draw grid outline
+                mesh_builder.line(&[
+                    Point2 { x, y },
+                    Point2 { x: x + CELL_SIZE, y },
+                    Point2 { x: x + CELL_SIZE, y: y + CELL_SIZE },
+                    Point2 { x, y: y + CELL_SIZE },
+                    Point2 { x, y }
+                ], 1.0, Color::BLACK)?;
+            }
+        }
+        
+        let mesh = Mesh::from_data(ctx, mesh_builder.build());
+        canvas.draw(&mesh, graphics::DrawParam::default());
+        
+        canvas.finish(ctx)?;
+        Ok(())
     }
 
-    fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult {
-        if button == MouseButton::Left && !self.input_mode {
-            let (screen_w, screen_h) = _ctx.gfx.drawable_size();
-            let button_width = 100.0;
-            let button_height = 30.0;
-            let button_x = (screen_w - button_width) / 2.0;
-            let button_y = screen_h - button_height - 20.0;
-
-            if x >= button_x && x <= button_x + button_width && y >= button_y && y <= button_y + button_height {
-                println!("Button clicked!");
-                self.open_input_dialog();
-            }
+    fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
+        if button == MouseButton::Left {
+            self.handle_click(x, y);
         }
         Ok(())
     }
 }
 
 fn main() -> GameResult {
-    println!("Hello World");
-    let (ctx, event_loop) = ContextBuilder::new("grid_app", "Author")
-        .build()
-        .expect("Failed to build ggez context");
-
-    let app = GridApp::new();
-    event::run(ctx, event_loop, app)
+    let cb = ggez::ContextBuilder::new("battleship", "author");
+    let (ctx, event_loop) = cb.build()?;
+    let game = BattleshipGame::new();
+    event::run(ctx, event_loop, game)
 }
