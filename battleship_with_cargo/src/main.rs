@@ -1,11 +1,11 @@
 use ggez::{Context, GameResult};
+use ggez::conf::{WindowSetup, WindowMode};
 use ggez::event::{self, EventHandler, MouseButton};
 use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Mesh};
 use ggez::mint::{Point2, Vector2};
 
-const GRID_SIZE: usize = 10;
-const CELL_SIZE: f32 = 40.0;
-const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
+mod constants;
+use constants::{TITLE_BAR, GAME_WINDOW, GRID_SIZE, CELL_SIZE, SHIP_SIZES};
 
 #[derive(Clone, Copy, PartialEq)]
 enum CellState {
@@ -147,8 +147,11 @@ impl EventHandler for BattleshipGame {
 }
 
 fn main() -> GameResult {
-    let cb = ggez::ContextBuilder::new("battleship", "author");
+    let cb: ggez::ContextBuilder = ggez::ContextBuilder::new("battleship", "author")
+        .window_setup(WindowSetup::default().title(TITLE_BAR))
+        .window_mode(GAME_WINDOW);
+    
     let (ctx, event_loop) = cb.build()?;
-    let game = BattleshipGame::new();
+    let game: BattleshipGame = BattleshipGame::new();
     event::run(ctx, event_loop, game)
 }
