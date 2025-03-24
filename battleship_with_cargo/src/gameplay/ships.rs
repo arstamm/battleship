@@ -1,4 +1,4 @@
-const GRID_SIZE: usize = 10;
+use crate::gameplay::constants::GRID_SIZE;
 
 use crate::gameplay::gameplay::CellState;
 
