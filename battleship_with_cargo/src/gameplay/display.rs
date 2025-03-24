@@ -6,8 +6,7 @@ use ggez::input::keyboard::{KeyInput, KeyCode};
 
 use crate::gameplay::gameplay::BattleshipGame;
 use crate::gameplay::constants::GRID_SIZE;
-use crate::gameplay::constants::CELL_SIZE;
-use crate::gameplay::constants::SHIP_SIZES;
+use crate::gameplay::constants::{CELL_SIZE, SHIP_SIZES};
 use crate::gameplay::gameplay::CellState;
 
 impl EventHandler for BattleshipGame {

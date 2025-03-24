@@ -1,15 +1,20 @@
-use ggez::{Context, GameResult};
-use ggez::event::{self, EventHandler, MouseButton};
-use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Text, PxScale, Mesh};
-use ggez::mint::{Point2, Vector2};
+use ggez::GameResult;
+// use ggez::{Context, GameResult};
+use ggez::conf::WindowSetup;
+use ggez::event;
+// use ggez::event::{self, EventHandler, MouseButton};
+// use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Text, PxScale, Mesh};
+// use ggez::mint::{Point2, Vector2};
 
 mod gameplay;
 
 use gameplay::BattleshipGame;
-
+use gameplay::constants::{TITLE_BAR, GAME_WINDOW};
 
 fn main() -> GameResult {
-    let cb = ggez::ContextBuilder::new("battleship", "author");
+    let cb = ggez::ContextBuilder::new("battleship", "author")
+        .window_setup(WindowSetup::default().title(TITLE_BAR))
+        .window_mode(GAME_WINDOW);
     let (ctx, event_loop) = cb.build()?;
     let game = BattleshipGame::new();
     event::run(ctx, event_loop, game)
