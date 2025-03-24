@@ -1,4 +1,4 @@
-use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, SHIP_SIZES};
+use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, SHIP_SIZES, X_DELTA, Y_DELTA};
 
 use crate::gameplay::ships::place_ship;
 
@@ -36,8 +36,8 @@ impl BattleshipGame {
     }
 
     pub fn handle_click(&mut self, x: f32, y: f32) {
-        let col = (x / CELL_SIZE) as usize;
-        let row = (y / CELL_SIZE) as usize;
+        let col = ((x - X_DELTA) / CELL_SIZE) as usize;
+        let row = ((y - Y_DELTA) / CELL_SIZE) as usize;
         if row < GRID_SIZE && col < GRID_SIZE {
             if self.placing_ships {
                 if self.current_ship_index < SHIP_SIZES.len() {

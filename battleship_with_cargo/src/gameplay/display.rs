@@ -8,6 +8,7 @@ use crate::gameplay::gameplay::BattleshipGame;
 use crate::gameplay::constants::GRID_SIZE;
 use crate::gameplay::constants::{CELL_SIZE, SHIP_SIZES};
 use crate::gameplay::gameplay::CellState;
+use crate::gameplay::constants::{X_DELTA, X_DELTA_ENEMY, Y_DELTA};
 
 impl EventHandler for BattleshipGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
@@ -20,8 +21,37 @@ impl EventHandler for BattleshipGame {
         
         for row in 0..GRID_SIZE {
             for col in 0..GRID_SIZE {
-                let x = col as f32 * CELL_SIZE;
-                let y = row as f32 * CELL_SIZE;
+                let x = col as f32 * CELL_SIZE + X_DELTA;
+                let y = row as f32 * CELL_SIZE + Y_DELTA;
+                let color = match self.player_grid[row][col] {
+                    CellState::Ship => Color::GREEN,
+                    _ => Color::BLUE,
+                };
+                
+                // Draw cell background
+                canvas.draw(
+                    &graphics::Quad,
+                    graphics::DrawParam::new()
+                        .dest(Point2 { x, y })
+                        .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE })
+                        .color(color),
+                );
+                
+                // Draw grid outline
+                mesh_builder.line(&[
+                    Point2 { x, y },
+                    Point2 { x: x + CELL_SIZE, y },
+                    Point2 { x: x + CELL_SIZE, y: y + CELL_SIZE },
+                    Point2 { x, y: y + CELL_SIZE },
+                    Point2 { x, y }
+                ], 1.0, Color::BLACK)?;
+            }
+        }
+
+        for row in 0..GRID_SIZE {
+            for col in 0..GRID_SIZE {
+                let x = col as f32 * CELL_SIZE + X_DELTA_ENEMY;
+                let y = row as f32 * CELL_SIZE + Y_DELTA;
                 let color = match self.player_grid[row][col] {
                     CellState::Ship => Color::GREEN,
                     _ => Color::BLUE,

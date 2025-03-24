@@ -28,5 +28,10 @@ pub const GAME_WINDOW: WindowMode = WindowMode {
 
 // Grid and Ship Sizes
 pub const GRID_SIZE: usize = 10; // This needs to be usize specifically.
-pub const CELL_SIZE: f32 = 40.0;
+pub const CELL_SIZE: f32 = 55.0;
 pub const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
+
+// Grid Position
+pub const X_DELTA: f32 = 55.0;
+pub const Y_DELTA: f32 = 55.0;
+pub const X_DELTA_ENEMY: f32 = 800.0;
