@@ -1,3 +1,9 @@
+use ggez::{Context, GameResult};
+use ggez::event::{self, EventHandler, MouseButton};
+use ggez::graphics::{self, Canvas, Color, DrawMode, Mesh, MeshBuilder, PxScale, Text};
+use ggez::mint::{Point2, Vector2};
+use ggez::input::keyboard::{KeyInput, KeyCode};
+
 use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, SHIP_SIZES, X_DELTA, Y_DELTA};
 
 use crate::gameplay::ships::place_ship;
@@ -58,6 +64,39 @@ impl BattleshipGame {
                 self.player_turn = false;
             }
         }
+    }
+
+    pub fn display_grid(grid: &[[CellState; GRID_SIZE]; GRID_SIZE], x_pos: f32, y_pos: f32, mesh_builder: &mut MeshBuilder, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
+        for row in 0..GRID_SIZE {
+            for col in 0..GRID_SIZE {
+                let x = col as f32 * CELL_SIZE + x_pos;
+                let y = row as f32 * CELL_SIZE + y_pos;
+                let color = match grid[row][col] {
+                    CellState::Ship => Color::GREEN,
+                    _ => Color::BLUE,
+                };
+                
+                // Draw cell background
+                canvas.draw(
+                    &graphics::Quad,
+                    graphics::DrawParam::new()
+                        .dest(Point2 { x, y })
+                        .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE })
+                        .color(color),
+                );
+                
+                // Draw grid outline
+                mesh_builder.line(&[
+                    Point2 { x, y },
+                    Point2 { x: x + CELL_SIZE, y },
+                    Point2 { x: x + CELL_SIZE, y: y + CELL_SIZE },
+                    Point2 { x, y: y + CELL_SIZE },
+                    Point2 { x, y }
+                ], 1.0, Color::BLACK)?;
+            }
+        }
+        
+        Ok(())
     }
 }
 
