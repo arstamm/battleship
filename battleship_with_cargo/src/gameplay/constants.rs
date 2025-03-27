@@ -9,9 +9,11 @@ pub const TITLE_BAR: &str = "Battleship";
 
 // Window Set Up
 
+const SCREEN_SCALE: f32 = 1.4;
+
 pub const GAME_WINDOW: WindowMode = WindowMode {
-    width: 1600.0,
-    height: 900.0,
+    width: 1600.0 * SCREEN_SCALE,
+    height: 900.0 * SCREEN_SCALE,
     maximized: false,
     fullscreen_type: FullscreenType::Windowed,
     borderless: false,
@@ -28,10 +30,10 @@ pub const GAME_WINDOW: WindowMode = WindowMode {
 
 // Grid and Ship Sizes
 pub const GRID_SIZE: usize = 10; // This needs to be usize specifically.
-pub const CELL_SIZE: f32 = 55.0;
+pub const CELL_SIZE: f32 = 80.0;
 pub const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
 
 // Grid Position
-pub const X_DELTA: f32 = 55.0;
-pub const Y_DELTA: f32 = 55.0;
-pub const X_DELTA_ENEMY: f32 = 800.0;
+pub const X_DELTA: f32 = 80.0;
+pub const Y_DELTA: f32 = 80.0;
+pub const X_DELTA_ENEMY: f32 = 980.0;

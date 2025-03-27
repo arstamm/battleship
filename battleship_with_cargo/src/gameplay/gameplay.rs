@@ -41,9 +41,9 @@ impl BattleshipGame {
         self.current_direction = (self.current_direction + 1) % 4; // Cycle through 0-3
     }
 
-    pub fn handle_click(&mut self, x: f32, y: f32) {
-        let col = ((x - X_DELTA) / CELL_SIZE) as usize;
-        let row = ((y - Y_DELTA) / CELL_SIZE) as usize;
+    pub fn place_ships_event_listener(&mut self, x: f32, y: f32, x_pos: f32, y_pos: f32, grid: &mut [[CellState; GRID_SIZE]; GRID_SIZE]) {
+        let col = ((x - x_pos) / CELL_SIZE) as usize;
+        let row = ((y - y_pos) / CELL_SIZE) as usize;
         if row < GRID_SIZE && col < GRID_SIZE {
             if self.placing_ships {
                 if self.current_ship_index < SHIP_SIZES.len() {
@@ -66,7 +66,10 @@ impl BattleshipGame {
         }
     }
 
-    pub fn display_grid(grid: &[[CellState; GRID_SIZE]; GRID_SIZE], x_pos: f32, y_pos: f32, mesh_builder: &mut MeshBuilder, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
+    pub fn display_grid(grid: &[[CellState; GRID_SIZE]; GRID_SIZE], x_pos: f32, y_pos: f32, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
+
+        let mut mesh_builder = MeshBuilder::new();
+
         for row in 0..GRID_SIZE {
             for col in 0..GRID_SIZE {
                 let x = col as f32 * CELL_SIZE + x_pos;
@@ -96,6 +99,9 @@ impl BattleshipGame {
             }
         }
         
+        let mesh = Mesh::from_data(ctx, mesh_builder.build());
+        canvas.draw(&mesh, graphics::DrawParam::default());
+
         Ok(())
     }
 }

@@ -1,6 +1,6 @@
 use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler, MouseButton};
-use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Text, PxScale, Mesh};
+use ggez::graphics::{self, Color, DrawMode, DrawParam, Mesh, MeshBuilder, PxScale, Rect, Text};
 use ggez::mint::{Point2, Vector2};
 use ggez::input::keyboard::{KeyInput, KeyCode};
 
@@ -17,14 +17,29 @@ impl EventHandler for BattleshipGame {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         let mut canvas = graphics::Canvas::from_frame(ctx, Color::WHITE);
-        let mut mesh_builder = MeshBuilder::new();
         
         // Display Grids
-        BattleshipGame::display_grid(&self.player_grid, X_DELTA, Y_DELTA, &mut mesh_builder, &mut canvas, ctx)?;
-        BattleshipGame::display_grid(&self.enemy_grid, X_DELTA_ENEMY, Y_DELTA, &mut mesh_builder, &mut canvas, ctx)?;
+        BattleshipGame::display_grid(&self.player_grid, X_DELTA, Y_DELTA, &mut canvas, ctx)?;
+        BattleshipGame::display_grid(&self.enemy_grid, X_DELTA_ENEMY, Y_DELTA, &mut canvas, ctx)?;
+
+
+        let banner: Mesh = Mesh::new_rectangle(
+            ctx, DrawMode::fill(), 
+            Rect { x: X_DELTA, y: 960.0, w: 1700.0, h: 130.0 }, 
+            Color::from_rgb(159, 177, 188) // Cadet Gray
+        )?;
+
+        let button: Mesh = Mesh::new_rectangle(
+            ctx, DrawMode::fill(), 
+            Rect { x: 1860.0, y: 240.0, w: 300.0, h: 240.0 }, 
+            Color::from_rgb(110, 136, 152) // Slate Gray
+        )?;
         
-        let mesh = Mesh::from_data(ctx, mesh_builder.build());
-        canvas.draw(&mesh, graphics::DrawParam::default());
+        let text: Text = Text::new("This is Text");
+
+        canvas.draw(&banner, DrawParam::default());
+        canvas.draw(&button, DrawParam::default());
+        canvas.draw(&text, DrawParam::default());
 
         canvas.finish(ctx)?;
         Ok(())
@@ -32,7 +47,7 @@ impl EventHandler for BattleshipGame {
 
     fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
         if button == MouseButton::Left {
-            self.handle_click(x, y);
+            // self.place_ships_event_listener(x, y);
         }
         Ok(())
     }
