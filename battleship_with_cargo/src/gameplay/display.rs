@@ -22,8 +22,8 @@ impl EventHandler for BattleshipGame {
         let mut canvas = graphics::Canvas::from_frame(ctx, constants::BACKGROUND_COLOR);
         
         // Display Grids
-        BattleshipGame::display_grid(&self.player_grid, X_DELTA, Y_DELTA, &mut canvas, ctx)?;
-        BattleshipGame::display_grid(&self.enemy_grid, X_DELTA_ENEMY, Y_DELTA, &mut canvas, ctx)?;
+        BattleshipGame::display_grid(&self.player, X_DELTA, Y_DELTA, &mut canvas, ctx)?;
+        BattleshipGame::display_grid(&self.enemy, X_DELTA_ENEMY, Y_DELTA, &mut canvas, ctx)?;
 
         // Display Banners
         BattleshipGame::display_banner(constants::BANNER_X_POS, constants::BANNER_Y_POS, constants::BANNER_WIDTH, constants::BANNER_HEIGHT, self.banner_text.as_str(), constants::BANNER_BACKGROUND_COLOR,constants::FONT_COLOR, ctx, &mut canvas)?;
@@ -35,7 +35,7 @@ impl EventHandler for BattleshipGame {
 
     fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
         if button == MouseButton::Left {
-            // self.place_ships_event_listener(x, y);
+            // self.place_ships_event_listener(x, y, X_DELTA, Y_DELTA, &mut self.player);
         }
         Ok(())
     }
@@ -43,7 +43,7 @@ impl EventHandler for BattleshipGame {
     fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyInput, _repeat: bool) -> GameResult<()> {
         match keycode.keycode {
             Some(KeyCode::Space) => {
-                self.toggle_direction(); // Toggle direction on spacebar press
+                // self.toggle_direction(&mut self.player); // Toggle direction on spacebar press
             }
             _ => {}
         }
