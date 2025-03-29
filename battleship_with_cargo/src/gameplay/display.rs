@@ -9,6 +9,8 @@ use crate::gameplay::constants;
 
 impl EventHandler for BattleshipGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
+        eventlisteners::check_win(&mut self.player);
+        eventlisteners::check_win(&mut self.enemy);   
         Ok(())
     }
 
@@ -21,7 +23,8 @@ impl EventHandler for BattleshipGame {
 
         // Display Banners
         BattleshipGame::display_banner(&self.text_display_box, ctx, &mut canvas)?;
-        BattleshipGame::display_banner(&self.button, ctx, &mut canvas)?;
+        BattleshipGame::display_banner(&self.p1_button, ctx, &mut canvas)?;
+        BattleshipGame::display_banner(&self.p2_button, ctx, &mut canvas)?;
 
 
         canvas.finish(ctx)?;
@@ -30,10 +33,12 @@ impl EventHandler for BattleshipGame {
 
     fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
         if button == MouseButton::Left {
-            // eventlisteners::place_ships(x, y, X_DELTA, Y_DELTA, &mut self.player);
-            // eventlisteners::placeships
             eventlisteners::place_ships(x, y, &mut self.player);
             eventlisteners::place_ships(x, y, &mut self.enemy);
+            eventlisteners::click_action(x, y, &mut self.p1_button, &mut self.player);
+            eventlisteners::click_action(x, y, &mut self.p2_button, &mut self.enemy);
+            eventlisteners::check_guess(x, y, &mut self.player);
+            eventlisteners::check_guess(x, y, &mut self.enemy);
         }
     
         Ok(())

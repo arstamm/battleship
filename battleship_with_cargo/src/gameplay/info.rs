@@ -2,15 +2,6 @@ use crate::gameplay::constants::GRID_SIZE;
 use crate::gameplay::gameplay::CellState;
 use ggez::graphics::Color;
 
-// pub struct player {
-//     pub grid: [[CellState; GRID_SIZE]; GRID_SIZE],
-//     pub grid: [[CellState; GRID_SIZE]; GRID_SIZE],
-//     pub turn: bool,
-//     pub ships: bool,
-//     pub ship_index: usize,
-//     pub current_direction: usize,
-// }
-
 pub struct Player {
     pub x_pos: f32,
     pub y_pos: f32,
@@ -19,6 +10,9 @@ pub struct Player {
     pub placing_ships: bool,
     pub current_ship_index: usize,
     pub current_direction: usize,
+    pub hits: usize,
+    pub ship_color: Color,
+    pub grid_cell_color: Color
     // pub current_locations
 }
 

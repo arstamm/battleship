@@ -1,14 +1,15 @@
 use ggez::{Context, GameResult};
 // use ggez::event::{self, EventHandler, MouseButton};
-use ggez::graphics::{self, Canvas, DrawMode, Mesh, MeshBuilder, Text, TextFragment, Rect, DrawParam};
+use ggez::graphics::{self, Canvas, DrawMode, DrawParam, Mesh, MeshBuilder, Rect, Text, TextFragment};
 use ggez::mint::{Point2, Vector2};
 // use ggez::input::keyboard::{KeyInput, KeyCode};
 use ggez::glam::Vec2;
 
 use crate::gameplay::constants;
-use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, X_DELTA, Y_DELTA, BANNER_BACKGROUND_COLOR, BANNER_HEIGHT, BANNER_WIDTH, BANNER_X_POS, BANNER_Y_POS, BUTTON_BACKGROUND_COLOR, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_X_POS, BUTTON_Y_POS, FONT_COLOR, X_DELTA_ENEMY};
+use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, X_DELTA, Y_DELTA, BANNER_BACKGROUND_COLOR, BANNER_HEIGHT, BANNER_WIDTH, BANNER_X_POS, BANNER_Y_POS, BUTTON_BACKGROUND_COLOR, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_X_POS, BUTTON_Y_POS, BUTTON_ENEMY_Y_POS, FONT_COLOR, X_DELTA_ENEMY};
 
 use crate::gameplay::info::{Player, Banner};
+
 
 // use crate::gameplay::ships::place_ship;
 
@@ -24,7 +25,8 @@ pub struct BattleshipGame {
     pub player: Player,
     pub enemy: Player,
     pub text_display_box: Banner,
-    pub button: Banner,
+    pub p1_button: Banner,
+    pub p2_button: Banner
 }
 
 impl BattleshipGame {
@@ -39,7 +41,10 @@ impl BattleshipGame {
                 turn: false,
                 placing_ships: true,
                 current_ship_index: 0,
-                current_direction: 1
+                current_direction: 1,
+                hits: 0,
+                ship_color: constants::SHIP_COLOR,
+                grid_cell_color: constants::GRID_CELL_COLOR
             },
             enemy: Player {
                 x_pos: X_DELTA_ENEMY,
@@ -48,30 +53,39 @@ impl BattleshipGame {
                 turn: false,
                 placing_ships: true,
                 current_ship_index: 0,
-                current_direction: 1
+                current_direction: 1,
+                hits: 0,
+                ship_color: constants::SHIP_COLOR,
+                grid_cell_color: constants::GRID_CELL_COLOR
             },
             text_display_box: Banner { x: BANNER_X_POS, 
                 y: BANNER_Y_POS, 
                 w: BANNER_WIDTH, 
                 h: BANNER_HEIGHT, 
-                label: "Welcome to Battleship".to_string(),
+                label: "WELCOME TO BATTLESHIP".to_string(),
                 background_color: BANNER_BACKGROUND_COLOR,
                 font_color: FONT_COLOR
             },
-            button: Banner {
+            p1_button: Banner {
                 x: BUTTON_X_POS,
                 y: BUTTON_Y_POS,
                 w: BUTTON_WIDTH,
                 h: BUTTON_HEIGHT,
-                label: "BEGIN".to_string(),
+                label: "HIDE\nPLAYER\nSHIPS".to_string(),
+                background_color: BUTTON_BACKGROUND_COLOR,
+                font_color: FONT_COLOR
+            },
+            p2_button: Banner {
+                x: BUTTON_X_POS,
+                y: BUTTON_ENEMY_Y_POS,
+                w: BUTTON_WIDTH,
+                h: BUTTON_HEIGHT,
+                label: "HIDE\nENEMY\nSHIPS".to_string(),
                 background_color: BUTTON_BACKGROUND_COLOR,
                 font_color: FONT_COLOR
             }
-
-        }
+        }   
     }
-
-    
 
     pub fn display_banner(banner: &Banner, ctx: &mut Context, canvas: & mut Canvas) -> GameResult {
         
@@ -103,8 +117,10 @@ impl BattleshipGame {
                 let x = col as f32 * CELL_SIZE + player.x_pos;
                 let y = row as f32 * CELL_SIZE + player.y_pos;
                 let color = match player.grid[row][col] {
-                    CellState::Ship => constants::SHIP_COLOR,
-                    _ => constants::GRID_CELL_COLOR,
+                    CellState::Hit => constants::HIT_COLOR,
+                    CellState::Miss => constants::MISS_COLOR,
+                    CellState::Ship => player.ship_color,
+                    CellState::Empty => player.grid_cell_color
                 };
                 
                 // Draw cell background
