@@ -5,11 +5,10 @@
 use ggez::conf::{WindowMode, FullscreenType};
 use ggez::graphics::Color;
 
-
 // Colors
 
 // 232, 233, 243 Ghost White
-const GHOST_WHITE: Color = Color::new(0.9098039, 0.9137255, 0.9529412, 1.0);
+// const GHOST_WHITE: Color = Color::new(0.9098039, 0.9137255, 0.9529412, 1.0);
 
 // 166, 166, 168 French Gray
 const FRENCH_GRAY: Color = Color::new(0.6509804, 0.6509804, 0.6588235, 1.0);
@@ -28,7 +27,10 @@ const BLUE: Color = Color::new(0.0745098, 0.6235294, 0.9254902, 1.0);
 
 
 // 20, 49, 9 Pakistan Green
-const PAKISTAN_GREEN: Color = Color::new(0.0784314, 0.1921569, 0.0352941, 1.0);
+// const PAKISTAN_GREEN: Color = Color::new(0.0784314, 0.1921569, 0.0352941, 1.0);
+
+// 158, 228, 147 Kelly Green
+const KELLY_GREEN: Color = Color::new(0.6196078, 0.8941176, 0.5764706, 1.0);
 
 
 // Title Bar
@@ -59,7 +61,7 @@ pub const GAME_WINDOW: WindowMode = WindowMode {
 // Grid
 pub const GRID_CELL_COLOR: Color = BLUE;
 pub const GRID_LINE_COLOR: Color = Color::BLACK;
-pub const SHIP_COLOR: Color = PAKISTAN_GREEN;
+pub const SHIP_COLOR: Color = KELLY_GREEN;
 pub const X_DELTA: f32 = 80.0 * SCREEN_SCALE;
 pub const Y_DELTA: f32 = 80.0 * SCREEN_SCALE;
 pub const X_DELTA_ENEMY: f32 = 980.0 * SCREEN_SCALE;
@@ -88,6 +90,3 @@ pub const BUTTON_X_POS: f32 = 1860.0 * SCREEN_SCALE;
 pub const BUTTON_Y_POS: f32 = 240.0 * SCREEN_SCALE;
 pub const BUTTON_WIDTH: f32 = 300.0 * SCREEN_SCALE;
 pub const BUTTON_HEIGHT: f32 = 240.0 * SCREEN_SCALE;
-
-
-
