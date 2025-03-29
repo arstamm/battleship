@@ -1,7 +1,6 @@
 // Constants
 
 // Imports
-
 use ggez::conf::{WindowMode, FullscreenType};
 use ggez::graphics::Color;
 
@@ -29,15 +28,17 @@ const MARINE_BLUE: Color = Color::new(0.0392157, 0.2980392, 0.4941176, 1.0);
 const BLUE: Color = Color::new(0.0745098, 0.6235294, 0.9254902, 1.0);
 
 // 158, 228, 147 Kelly Green
-const KELLY_GREEN: Color = Color::new(0.6196078, 0.8941176, 0.5764706, 1.0);
+// const KELLY_GREEN: Color = Color::new(0.6196078, 0.8941176, 0.5764706, 1.0);
+
+// 91, 140, 90 Sea Green
+const SEA_GREEN: Color = Color::new(0.3568627, 0.5490196, 0.3529412, 1.0);
 
 
 // Title Bar
 pub const TITLE_BAR: &str = "Battleship";
 
 // Window Set Up
-
-const SCREEN_SCALE: f32 = 1.0;
+const SCREEN_SCALE: f32 = 1.3;
 pub const BACKGROUND_COLOR: Color = RAISIN_BLACK;
 
 pub const GAME_WINDOW: WindowMode = WindowMode {
@@ -60,7 +61,7 @@ pub const GAME_WINDOW: WindowMode = WindowMode {
 // Grid
 pub const GRID_CELL_COLOR: Color = BLUE;
 pub const GRID_LINE_COLOR: Color = Color::BLACK;
-pub const SHIP_COLOR: Color = KELLY_GREEN;
+pub const SHIP_COLOR: Color = SEA_GREEN;
 pub const HIT_COLOR: Color = RED;
 pub const HOVER_COLOR: Color = MARINE_BLUE;
 pub const MISS_COLOR: Color = GHOST_WHITE;
@@ -72,13 +73,11 @@ pub const CELL_SIZE: f32 = 80.0 * SCREEN_SCALE;
 pub const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
 
 // Text
-
 pub const TEXT_MARGIN: f32 = 30.0 * SCREEN_SCALE;
 pub const FONT_SIZE: f32 = 60.0 * SCREEN_SCALE;
 pub const FONT_COLOR: Color = RAISIN_BLACK;
 
 // Banner
-
 pub const BANNER_BACKGROUND_COLOR: Color = FRENCH_GRAY;
 pub const BANNER_X_POS: f32 = X_DELTA;
 pub const BANNER_Y_POS: f32 = 960.0 * SCREEN_SCALE;
@@ -86,10 +85,9 @@ pub const BANNER_WIDTH: f32 = 1700.0 * SCREEN_SCALE;
 pub const BANNER_HEIGHT: f32 = 130.0 * SCREEN_SCALE;
 
 // Buttons
-
 pub const BUTTON_BACKGROUND_COLOR: Color = FRENCH_GRAY;
 pub const BUTTON_X_POS: f32 = 1860.0 * SCREEN_SCALE;
 pub const BUTTON_Y_POS: f32 = 240.0 * SCREEN_SCALE;
-pub const BUTTON_ENEMY_Y_POS: f32 = 580.0 * SCREEN_SCALE;
+// pub const BUTTON_ENEMY_Y_POS: f32 = 580.0 * SCREEN_SCALE;
 pub const BUTTON_WIDTH: f32 = 300.0 * SCREEN_SCALE;
 pub const BUTTON_HEIGHT: f32 = 240.0 * SCREEN_SCALE;

@@ -6,7 +6,7 @@ use ggez::mint::{Point2, Vector2};
 use ggez::glam::Vec2;
 
 use crate::gameplay::constants;
-use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, X_DELTA, Y_DELTA, BANNER_BACKGROUND_COLOR, BANNER_HEIGHT, BANNER_WIDTH, BANNER_X_POS, BANNER_Y_POS, BUTTON_BACKGROUND_COLOR, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_X_POS, BUTTON_Y_POS, BUTTON_ENEMY_Y_POS, FONT_COLOR, X_DELTA_ENEMY};
+use crate::gameplay::constants::{GRID_SIZE, CELL_SIZE, X_DELTA, Y_DELTA, BANNER_BACKGROUND_COLOR, BANNER_HEIGHT, BANNER_WIDTH, BANNER_X_POS, BANNER_Y_POS, BUTTON_BACKGROUND_COLOR, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_X_POS, BUTTON_Y_POS, FONT_COLOR, X_DELTA_ENEMY};
 
 use crate::gameplay::info::{Player, Banner};
 
@@ -22,12 +22,26 @@ pub enum CellState {
     Hover,
 }
 
+#[derive(Clone, Copy, PartialEq)]
+pub enum GameState  {
+    Begin,
+    ButtonPressedBegin,
+    PlayerPlaceShips,
+    ButtonPressedPlayerPlaceShips,
+    EnemyPlaceShips,
+    ButtonPressedEnemyPlaceShips,
+    Turns,
+    SignalWin,
+    Win,
+    SignalBegin,
+}
+
 pub struct BattleshipGame {
+    pub game_state: GameState,
     pub player: Player,
     pub enemy: Player,
     pub text_display_box: Banner,
-    pub p1_button: Banner,
-    pub p2_button: Banner
+    pub button: Banner
 }
 
 impl BattleshipGame {
@@ -35,15 +49,19 @@ impl BattleshipGame {
         Self {
             // player_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
             // enemy_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            game_state: GameState::Begin,
             player: Player { 
                 x_pos: X_DELTA,
                 y_pos: Y_DELTA,
                 grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
                 turn: false,
-                placing_ships: true,
+                placing_ships: false,
+                start_flag: false,
+                end_flag: false,
                 current_ship_index: 0,
                 current_direction: 1,
                 hits: 0,
+                num_turns: 0,
                 ship_color: constants::SHIP_COLOR,
                 grid_cell_color: constants::GRID_CELL_COLOR
             },
@@ -52,10 +70,13 @@ impl BattleshipGame {
                 y_pos: Y_DELTA,
                 grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
                 turn: false,
-                placing_ships: true,
+                placing_ships: false,
+                start_flag: false,
+                end_flag: false,
                 current_ship_index: 0,
                 current_direction: 1,
                 hits: 0,
+                num_turns: 0,
                 ship_color: constants::SHIP_COLOR,
                 grid_cell_color: constants::GRID_CELL_COLOR
             },
@@ -67,24 +88,15 @@ impl BattleshipGame {
                 background_color: BANNER_BACKGROUND_COLOR,
                 font_color: FONT_COLOR
             },
-            p1_button: Banner {
+            button: Banner {
                 x: BUTTON_X_POS,
                 y: BUTTON_Y_POS,
                 w: BUTTON_WIDTH,
                 h: BUTTON_HEIGHT,
-                label: "HIDE\nPLAYER\nSHIPS".to_string(),
+                label: "CLICK\nTO\nBEGIN".to_string(),
                 background_color: BUTTON_BACKGROUND_COLOR,
                 font_color: FONT_COLOR
             },
-            p2_button: Banner {
-                x: BUTTON_X_POS,
-                y: BUTTON_ENEMY_Y_POS,
-                w: BUTTON_WIDTH,
-                h: BUTTON_HEIGHT,
-                label: "HIDE\nENEMY\nSHIPS".to_string(),
-                background_color: BUTTON_BACKGROUND_COLOR,
-                font_color: FONT_COLOR
-            }
         }   
     }
 

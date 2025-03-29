@@ -7,10 +7,19 @@ use crate::gameplay::gameplay::BattleshipGame;
 use crate::gameplay::eventlisteners;
 use crate::gameplay::constants;
 
+use super::gameplay::GameState;
+
 impl EventHandler for BattleshipGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        eventlisteners::check_win(&mut self.player);
-        eventlisteners::check_win(&mut self.enemy);   
+        eventlisteners::check_state(self);
+        if self.game_state == GameState::Turns {
+            if self.player.turn {
+                eventlisteners::check_turn(&mut self.player, &mut self.enemy, &mut self.text_display_box, "--- ENEMY TURN ---", &mut self.button);
+            }
+            if self.enemy.turn {
+                eventlisteners::check_turn(&mut self.enemy, &mut self.player, &mut self.text_display_box, "--- PLAYER TURN ---", &mut self.button); 
+            }   
+        }
         Ok(())
     }
 
@@ -23,8 +32,7 @@ impl EventHandler for BattleshipGame {
 
         // Display Banners
         BattleshipGame::display_banner(&self.text_display_box, ctx, &mut canvas)?;
-        BattleshipGame::display_banner(&self.p1_button, ctx, &mut canvas)?;
-        BattleshipGame::display_banner(&self.p2_button, ctx, &mut canvas)?;
+        BattleshipGame::display_banner(&self.button, ctx, &mut canvas)?;
 
 
         canvas.finish(ctx)?;
@@ -35,10 +43,9 @@ impl EventHandler for BattleshipGame {
         if button == MouseButton::Left {
             eventlisteners::place_ships(x, y, &mut self.player);
             eventlisteners::place_ships(x, y, &mut self.enemy);
-            eventlisteners::click_action(x, y, &mut self.p1_button, &mut self.player);
-            eventlisteners::click_action(x, y, &mut self.p2_button, &mut self.enemy);
-            eventlisteners::check_guess(x, y, &mut self.player);
-            eventlisteners::check_guess(x, y, &mut self.enemy);
+            eventlisteners::click_action(x, y, self);
+            eventlisteners::check_guess(x, y, &mut self.player, &mut self.button);
+            eventlisteners::check_guess(x, y, &mut self.enemy, &mut self.button);
         }
     
         Ok(())

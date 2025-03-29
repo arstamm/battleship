@@ -8,9 +8,12 @@ pub struct Player {
     pub grid: [[CellState; GRID_SIZE]; GRID_SIZE],
     pub turn: bool,
     pub placing_ships: bool,
+    pub start_flag: bool,
+    pub end_flag: bool,
     pub current_ship_index: usize,
     pub current_direction: usize,
     pub hits: usize,
+    pub num_turns: u8,
     pub ship_color: Color,
     pub grid_cell_color: Color
     // pub current_locations
