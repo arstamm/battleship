@@ -19,6 +19,7 @@ pub enum CellState {
     Ship,
     Hit,
     Miss,
+    Hover,
 }
 
 pub struct BattleshipGame {
@@ -119,6 +120,7 @@ impl BattleshipGame {
                 let color = match player.grid[row][col] {
                     CellState::Hit => constants::HIT_COLOR,
                     CellState::Miss => constants::MISS_COLOR,
+                    CellState::Hover => constants::HOVER_COLOR,
                     CellState::Ship => player.ship_color,
                     CellState::Empty => player.grid_cell_color
                 };

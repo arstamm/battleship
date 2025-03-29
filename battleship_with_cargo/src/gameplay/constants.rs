@@ -23,7 +23,7 @@ const FRENCH_GRAY: Color = Color::new(0.6509804, 0.6509804, 0.6588235, 1.0);
 const RAISIN_BLACK: Color = Color::new(0.1529412, 0.1490196, 0.2078431, 1.0);
 
 // 10, 76, 126 Marine Blue
-pub const MARINE_BLUE: Color = Color::new(0.0392157, 0.2980392, 0.4941176, 1.0);
+const MARINE_BLUE: Color = Color::new(0.0392157, 0.2980392, 0.4941176, 1.0);
 
 // 19, 159, 236 Blue
 const BLUE: Color = Color::new(0.0745098, 0.6235294, 0.9254902, 1.0);
@@ -62,6 +62,7 @@ pub const GRID_CELL_COLOR: Color = BLUE;
 pub const GRID_LINE_COLOR: Color = Color::BLACK;
 pub const SHIP_COLOR: Color = KELLY_GREEN;
 pub const HIT_COLOR: Color = RED;
+pub const HOVER_COLOR: Color = MARINE_BLUE;
 pub const MISS_COLOR: Color = GHOST_WHITE;
 pub const X_DELTA: f32 = 80.0 * SCREEN_SCALE;
 pub const Y_DELTA: f32 = 80.0 * SCREEN_SCALE;

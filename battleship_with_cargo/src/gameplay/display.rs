@@ -44,6 +44,13 @@ impl EventHandler for BattleshipGame {
         Ok(())
     }
 
+    fn mouse_motion_event(&mut self, _ctx: &mut Context, _x: f32, _y: f32, _dx: f32, _dy: f32) -> Result<(), ggez::GameError> {
+
+        eventlisteners::hover_ships(_x, _y, &mut self.player);
+        eventlisteners::hover_ships(_x, _y, &mut self.enemy);
+        Ok(())
+    }
+
     fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyInput, _repeat: bool) -> GameResult<()> {
         match keycode.keycode {
             Some(KeyCode::Space) => {
