@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use ggez::{Context, GameResult};
 // use ggez::event::{self, EventHandler, MouseButton};
 use ggez::graphics::{self, Canvas, DrawMode, DrawParam, Mesh, MeshBuilder, Rect, Text, TextFragment};
@@ -54,6 +56,7 @@ impl BattleshipGame {
                 x_pos: X_DELTA,
                 y_pos: Y_DELTA,
                 grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+                sprite_map: HashMap::new(),
                 turn: false,
                 placing_ships: false,
                 start_flag: false,
@@ -69,6 +72,7 @@ impl BattleshipGame {
                 x_pos: X_DELTA_ENEMY,
                 y_pos: Y_DELTA,
                 grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+                sprite_map: HashMap::new(),
                 turn: false,
                 placing_ships: false,
                 start_flag: false,

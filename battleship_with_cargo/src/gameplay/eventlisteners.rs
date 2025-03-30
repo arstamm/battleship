@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 use crate::gameplay::info::Player;
 use crate::gameplay::constants::{CELL_SIZE, GRID_SIZE, SHIP_SIZES};
 use crate::gameplay::gameplay::{CellState, GameState};
-use crate::gameplay::ships::place_ship;
+use crate::gameplay::ships::{place_ship, hover_ship};
 use crate::gameplay::info::Banner;
 use crate::gameplay::constants;
 use crate::gameplay::constants::{X_DELTA, Y_DELTA, X_DELTA_ENEMY};
@@ -31,7 +33,7 @@ pub fn place_ships(x: f32, y: f32, p: &mut Player) {
     if row < GRID_SIZE && col < GRID_SIZE && x - p.x_pos >= 0.0 && y - p.y_pos >= 0.0 {
         if p.placing_ships {
             if p.current_ship_index < SHIP_SIZES.len() {
-                if place_ship(&mut p.grid, row, col, p.current_direction, SHIP_SIZES[p.current_ship_index], CellState::Ship) {
+                if place_ship(&mut p.grid, row, col, p.current_direction, SHIP_SIZES[p.current_ship_index], CellState::Ship, &mut p.sprite_map) {
                     p.current_ship_index += 1;
                     if p.current_ship_index >= SHIP_SIZES.len() {
                         p.placing_ships = false;
@@ -63,7 +65,7 @@ pub fn hover_ships(x: f32, y: f32, p: &mut Player) {
         // Create Hover Effect
         if row < GRID_SIZE && col < GRID_SIZE && x - p.x_pos >= 0.0 && y - p.y_pos >= 0.0 {
             if p.current_ship_index < SHIP_SIZES.len() {
-                place_ship(&mut p.grid, row, col, p.current_direction, SHIP_SIZES[p.current_ship_index], CellState::Hover);
+                hover_ship(&mut p.grid, row, col, p.current_direction, SHIP_SIZES[p.current_ship_index], CellState::Hover);
             }
         }
     }
@@ -186,6 +188,7 @@ pub fn check_state(battleship_game: &mut BattleshipGame) {
             x_pos: X_DELTA,
             y_pos: Y_DELTA,
             grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            sprite_map: HashMap::new(),
             turn: false,
             placing_ships: false,
             start_flag: false,
@@ -202,6 +205,7 @@ pub fn check_state(battleship_game: &mut BattleshipGame) {
             x_pos: X_DELTA_ENEMY,
             y_pos: Y_DELTA,
             grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            sprite_map: HashMap::new(),
             turn: false,
             placing_ships: false,
             start_flag: false,

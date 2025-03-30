@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::gameplay::constants::GRID_SIZE;
 use crate::gameplay::gameplay::CellState;
 use ggez::graphics::Color;
@@ -6,6 +8,7 @@ pub struct Player {
     pub x_pos: f32,
     pub y_pos: f32,
     pub grid: [[CellState; GRID_SIZE]; GRID_SIZE],
+    pub sprite_map: HashMap<(usize, usize), usize>,
     pub turn: bool,
     pub placing_ships: bool,
     pub start_flag: bool,
