@@ -70,3 +70,37 @@ impl EventHandler for BattleshipGame {
         Ok(())
     }
 }
+
+
+// // Load the sprite sheet once, typically in the game's initialization phase
+// let sprite_sheet = graphics::Image::new(ctx, "battleship_with_cargo/src/sprites/Grid_Sprites_3.png")?;
+
+// // Grid layout information
+// let sprites_per_row = 6; // Number of sprites in each row
+// let sprites_per_column = 4; // Number of sprites in each column
+// let sprite_width = 1.0 / sprites_per_row as f32; // Normalized width of each sprite
+// let sprite_height = 1.0 / sprites_per_column as f32; // Normalized height of each sprite
+
+// // Define the sprite you want to draw
+// Index of the sprite (0-based, left-to-right, top-to-bottom)
+
+// // Calculate the row and column of the sprite
+// let sprite_x = (sprite_index % sprites_per_row) as f32; // Column index
+// let sprite_y = (sprite_index / sprites_per_row) as f32; // Row index
+
+// // Define the source rectangle for the sprite
+// let src_rect = graphics::Rect::new(
+//     sprite_x * sprite_width,
+//     sprite_y * sprite_height,
+//     sprite_width,
+//     sprite_height,
+// );
+
+// // Draw the sprite instead of a colored rectangle
+// canvas.draw(
+//     &sprite_sheet,
+//     graphics::DrawParam::new()
+//         .dest(Point2 { x, y }) // Position on screen
+//         .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE }) // Scale to fit cell size
+//         .src(src_rect),
+// );
