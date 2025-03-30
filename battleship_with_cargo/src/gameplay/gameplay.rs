@@ -125,6 +125,7 @@ impl BattleshipGame {
         Ok(())
     }
 
+    // Add code to display sprites here. Access sprite_map by using player.sprite_map
     pub fn display_grid(player: &Player, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
 
         let mut mesh_builder = MeshBuilder::new();
@@ -158,6 +159,10 @@ impl BattleshipGame {
                     Point2 { x, y: y + CELL_SIZE },
                     Point2 { x, y }
                 ], 1.0, constants::GRID_LINE_COLOR)?;
+
+                // I would recommend adding code here to start drawing the sprites
+                // so they are drawn after each grid block is drawn making it 
+                // display on top.
             }
         }
         
