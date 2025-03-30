@@ -38,7 +38,7 @@ const SEA_GREEN: Color = Color::new(0.3568627, 0.5490196, 0.3529412, 1.0);
 pub const TITLE_BAR: &str = "Battleship";
 
 // Window Set Up
-const SCREEN_SCALE: f32 = 1.3;
+const SCREEN_SCALE: f32 = 0.7;
 pub const BACKGROUND_COLOR: Color = RAISIN_BLACK;
 
 pub const GAME_WINDOW: WindowMode = WindowMode {
