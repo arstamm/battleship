@@ -73,7 +73,7 @@ impl EventHandler for BattleshipGame {
 
 
 // // Load the sprite sheet once, typically in the game's initialization phase
-// let sprite_sheet = graphics::Image::new(ctx, "/path_to_sprite_sheet.png")?;
+// let sprite_sheet = graphics::Image::new(ctx, "battleship_with_cargo/src/sprites/Grid_Sprites_3.png")?;
 
 // // Grid layout information
 // let sprites_per_row = 6; // Number of sprites in each row
