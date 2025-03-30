@@ -10,6 +10,7 @@ pub fn place_ship(
     col: usize, 
     direction: usize, 
     size: usize,
+    cellstate: CellState
 ) -> bool {
     let (dx, dy) = match direction {
         0 => (-1, 0),  // Up
@@ -36,7 +37,7 @@ pub fn place_ship(
     }
 
     for &(r, c) in &coordinates {
-        grid[r][c] = CellState::Ship;
+        grid[r][c] = cellstate;
     }
 
     true

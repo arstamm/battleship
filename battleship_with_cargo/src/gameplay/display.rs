@@ -1,100 +1,69 @@
 use ggez::{Context, GameResult};
-use ggez::event::{self, EventHandler, MouseButton};
-use ggez::graphics::{self, Color, DrawMode, MeshBuilder, Text, PxScale, Mesh};
-use ggez::mint::{Point2, Vector2};
+use ggez::event::{EventHandler, MouseButton};
+use ggez::graphics;
 use ggez::input::keyboard::{KeyInput, KeyCode};
 
 use crate::gameplay::gameplay::BattleshipGame;
-use crate::gameplay::constants::GRID_SIZE;
-use crate::gameplay::constants::{CELL_SIZE, SHIP_SIZES};
-use crate::gameplay::gameplay::CellState;
-use crate::gameplay::constants::{X_DELTA, X_DELTA_ENEMY, Y_DELTA};
+use crate::gameplay::eventlisteners;
+use crate::gameplay::constants;
+
+use super::gameplay::GameState;
 
 impl EventHandler for BattleshipGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
+        eventlisteners::check_state(self);
+        if self.game_state == GameState::Turns {
+            if self.player.turn {
+                eventlisteners::check_turn(&mut self.player, &mut self.enemy, &mut self.text_display_box, "--- ENEMY TURN ---", &mut self.button);
+            }
+            if self.enemy.turn {
+                eventlisteners::check_turn(&mut self.enemy, &mut self.player, &mut self.text_display_box, "--- PLAYER TURN ---", &mut self.button); 
+            }   
+        }
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
-        let mut canvas = graphics::Canvas::from_frame(ctx, Color::WHITE);
-        let mut mesh_builder = MeshBuilder::new();
+        let mut canvas = graphics::Canvas::from_frame(ctx, constants::BACKGROUND_COLOR);
         
-        for row in 0..GRID_SIZE {
-            for col in 0..GRID_SIZE {
-                let x = col as f32 * CELL_SIZE + X_DELTA;
-                let y = row as f32 * CELL_SIZE + Y_DELTA;
-                let color = match self.player_grid[row][col] {
-                    CellState::Ship => Color::GREEN,
-                    _ => Color::BLUE,
-                };
-                
-                // Draw cell background
-                canvas.draw(
-                    &graphics::Quad,
-                    graphics::DrawParam::new()
-                        .dest(Point2 { x, y })
-                        .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE })
-                        .color(color),
-                );
-                
-                // Draw grid outline
-                mesh_builder.line(&[
-                    Point2 { x, y },
-                    Point2 { x: x + CELL_SIZE, y },
-                    Point2 { x: x + CELL_SIZE, y: y + CELL_SIZE },
-                    Point2 { x, y: y + CELL_SIZE },
-                    Point2 { x, y }
-                ], 1.0, Color::BLACK)?;
-            }
-        }
+        // Display Grids
+        BattleshipGame::display_grid(&self.player, &mut canvas, ctx)?;
+        BattleshipGame::display_grid(&self.enemy, &mut canvas, ctx)?;
 
-        for row in 0..GRID_SIZE {
-            for col in 0..GRID_SIZE {
-                let x = col as f32 * CELL_SIZE + X_DELTA_ENEMY;
-                let y = row as f32 * CELL_SIZE + Y_DELTA;
-                let color = match self.player_grid[row][col] {
-                    CellState::Ship => Color::GREEN,
-                    _ => Color::BLUE,
-                };
-                
-                // Draw cell background
-                canvas.draw(
-                    &graphics::Quad,
-                    graphics::DrawParam::new()
-                        .dest(Point2 { x, y })
-                        .scale(Vector2 { x: CELL_SIZE, y: CELL_SIZE })
-                        .color(color),
-                );
-                
-                // Draw grid outline
-                mesh_builder.line(&[
-                    Point2 { x, y },
-                    Point2 { x: x + CELL_SIZE, y },
-                    Point2 { x: x + CELL_SIZE, y: y + CELL_SIZE },
-                    Point2 { x, y: y + CELL_SIZE },
-                    Point2 { x, y }
-                ], 1.0, Color::BLACK)?;
-            }
-        }
-        
-        let mesh = Mesh::from_data(ctx, mesh_builder.build());
-        canvas.draw(&mesh, graphics::DrawParam::default());
-        
+        // Display Banners
+        BattleshipGame::display_banner(&self.text_display_box, ctx, &mut canvas)?;
+        BattleshipGame::display_banner(&self.button, ctx, &mut canvas)?;
+
+
         canvas.finish(ctx)?;
         Ok(())
     }
 
     fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
         if button == MouseButton::Left {
-            self.handle_click(x, y);
+            eventlisteners::place_ships(x, y, &mut self.player);
+            eventlisteners::place_ships(x, y, &mut self.enemy);
+            eventlisteners::click_action(x, y, self);
+            eventlisteners::check_guess(x, y, &mut self.player, &mut self.button);
+            eventlisteners::check_guess(x, y, &mut self.enemy, &mut self.button);
         }
+    
+        Ok(())
+    }
+
+    fn mouse_motion_event(&mut self, _ctx: &mut Context, _x: f32, _y: f32, _dx: f32, _dy: f32) -> Result<(), ggez::GameError> {
+
+        eventlisteners::hover_ships(_x, _y, &mut self.player);
+        eventlisteners::hover_ships(_x, _y, &mut self.enemy);
         Ok(())
     }
 
     fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyInput, _repeat: bool) -> GameResult<()> {
         match keycode.keycode {
             Some(KeyCode::Space) => {
-                self.toggle_direction(); // Toggle direction on spacebar press
+                // self.toggle_direction(&mut self.player); // Toggle direction on spacebar press
+                eventlisteners::toggle_direction(&mut self.player);
+                eventlisteners::toggle_direction(&mut self.enemy);
             }
             _ => {}
         }
