@@ -38,7 +38,7 @@ const SEA_GREEN: Color = Color::new(0.3568627, 0.5490196, 0.3529412, 1.0);
 pub const TITLE_BAR: &str = "Battleship";
 
 // Window Set Up
-const SCREEN_SCALE: f32 = 0.7;
+const SCREEN_SCALE: f32 = 1.3;
 pub const BACKGROUND_COLOR: Color = RAISIN_BLACK;
 
 pub const GAME_WINDOW: WindowMode = WindowMode {
@@ -71,6 +71,7 @@ pub const X_DELTA_ENEMY: f32 = 980.0 * SCREEN_SCALE;
 pub const GRID_SIZE: usize = 10; // This needs to be usize specifically.
 pub const CELL_SIZE: f32 = 80.0 * SCREEN_SCALE;
 pub const SHIP_SIZES: [usize; 5] = [5, 4, 3, 3, 2];
+// pub const MAX_HIT_POINTS = 
 
 // Text
 pub const TEXT_MARGIN: f32 = 30.0 * SCREEN_SCALE;
@@ -91,3 +92,5 @@ pub const BUTTON_Y_POS: f32 = 240.0 * SCREEN_SCALE;
 // pub const BUTTON_ENEMY_Y_POS: f32 = 580.0 * SCREEN_SCALE;
 pub const BUTTON_WIDTH: f32 = 300.0 * SCREEN_SCALE;
 pub const BUTTON_HEIGHT: f32 = 240.0 * SCREEN_SCALE;
+
+// Message string Fragments
