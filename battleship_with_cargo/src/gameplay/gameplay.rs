@@ -51,45 +51,59 @@ pub struct BattleshipGame {
 impl BattleshipGame {
     pub fn new() -> Self {
         Self {
-            player_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
-            enemy_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
-            banner_text: "This is my banner text".to_string(),
-            button_text: "Button".to_string(),
-            player_turn: false,
-            placing_ships: true,
-            current_ship_index: 0,
-            current_direction: 1,
-        }
-    }
-
-    pub fn toggle_direction(&mut self) {
-        self.current_direction = (self.current_direction + 1) % 4; // Cycle through 0-3
-    }
-
-
-    pub fn place_ships_event_listener(&mut self, x: f32, y: f32, x_pos: f32, y_pos: f32, grid: &mut [[CellState; GRID_SIZE]; GRID_SIZE]) {
-        let col = ((x - x_pos) / CELL_SIZE) as usize;
-        let row = ((y - y_pos) / CELL_SIZE) as usize;
-        if row < GRID_SIZE && col < GRID_SIZE {
-            if self.placing_ships {
-                if self.current_ship_index < SHIP_SIZES.len() {
-                    if place_ship(&mut self.player_grid, row, col, self.current_direction, SHIP_SIZES[self.current_ship_index]) {
-                        self.current_ship_index += 1;
-                        if self.current_ship_index >= SHIP_SIZES.len() {
-                            self.placing_ships = false;
-                            self.player_turn = true;
-                        }
-                    }
-                }
-            } else if self.player_turn {
-                match self.enemy_grid[row][col] {
-                    CellState::Ship => self.enemy_grid[row][col] = CellState::Hit,
-                    CellState::Empty => self.enemy_grid[row][col] = CellState::Miss,
-                    _ => return,
-                }
-                self.player_turn = false;
-            }
-        }
+            // player_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            // enemy_grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+            game_state: GameState::Begin,
+            player: Player { 
+                x_pos: X_DELTA,
+                y_pos: Y_DELTA,
+                grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+                sprite_map: HashMap::new(),
+                turn: false,
+                placing_ships: false,
+                start_flag: false,
+                end_flag: false,
+                current_ship_index: 0,
+                current_direction: 1,
+                hits: 0,
+                num_turns: 0,
+                ship_color: constants::SHIP_COLOR,
+                grid_cell_color: constants::GRID_CELL_COLOR
+            },
+            enemy: Player {
+                x_pos: X_DELTA_ENEMY,
+                y_pos: Y_DELTA,
+                grid: [[CellState::Empty; GRID_SIZE]; GRID_SIZE],
+                sprite_map: HashMap::new(),
+                turn: false,
+                placing_ships: false,
+                start_flag: false,
+                end_flag: false,
+                current_ship_index: 0,
+                current_direction: 1,
+                hits: 0,
+                num_turns: 0,
+                ship_color: constants::SHIP_COLOR,
+                grid_cell_color: constants::GRID_CELL_COLOR
+            },
+            text_display_box: Banner { x: BANNER_X_POS, 
+                y: BANNER_Y_POS, 
+                w: BANNER_WIDTH, 
+                h: BANNER_HEIGHT, 
+                label: "WELCOME TO BATTLESHIP".to_string(),
+                background_color: BANNER_BACKGROUND_COLOR,
+                font_color: FONT_COLOR
+            },
+            button: Banner {
+                x: BUTTON_X_POS,
+                y: BUTTON_Y_POS,
+                w: BUTTON_WIDTH,
+                h: BUTTON_HEIGHT,
+                label: "CLICK\nTO\nBEGIN".to_string(),
+                background_color: BUTTON_BACKGROUND_COLOR,
+                font_color: FONT_COLOR
+            },
+        }   
     }
 
     pub fn display_banner(banner: &Banner, ctx: &mut Context, canvas: & mut Canvas) -> GameResult {
@@ -113,9 +127,8 @@ impl BattleshipGame {
         Ok(())
     }
 
-
-
-    pub fn display_grid(grid: &[[CellState; GRID_SIZE]; GRID_SIZE], x_pos: f32, y_pos: f32, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
+    // Add code to display sprites here. Access sprite_map by using player.sprite_map
+    pub fn display_grid(player: &Player, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
 
         let mut mesh_builder = MeshBuilder::new();
 
@@ -171,16 +184,16 @@ impl BattleshipGame {
 
 // }
 
-impl Gameplay {
-    // Part One: Place ships
-    pub fn new() {
-        // ?????  
-    }
+// impl Gameplay {
+//     // Part One: Place ships
+//     pub fn new() {
+//         // ?????  
+//     }
 
     
 
     
-    pub fn start() {
+//     pub fn start() {
 
 //         let mut quit: bool = false;
 //         let mut win: bool = false;
@@ -196,31 +209,31 @@ impl Gameplay {
 //             loop {
 //                 // Handle interaction
 
-                // Check for win and then update "win" variable.
+//                 // Check for win and then update "win" variable.
 
 
-                if (win) {
-                    break;
-                }
-                // Switch Truns
-            }
+//                 if (win) {
+//                     break;
+//                 }
+//                 // Switch Truns
+//             }
 
 
 
 
 
-            // Play again? (Ask user for input)
-            if (quit) {
-                break;
-            }
+//             // Play again? (Ask user for input)
+//             if (quit) {
+//                 break;
+//             }
 
             
 
 
 
-        }
+//         }
 
-    }
+//     }
     
 
-}
+// }
