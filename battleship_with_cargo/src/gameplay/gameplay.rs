@@ -1,3 +1,5 @@
+// Kelson Gneiting
+
 use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler, MouseButton};
 use ggez::graphics::{self, Canvas, Color, DrawMode, Mesh, MeshBuilder, PxScale, Text, TextFragment, Rect, DrawParam};
@@ -47,10 +49,20 @@ impl BattleshipGame {
         self.current_direction = (self.current_direction + 1) % 4; // Cycle through 0-3
     }
 
-
-    pub fn place_ships_event_listener(&mut self, x: f32, y: f32, x_pos: f32, y_pos: f32, grid: &mut [[CellState; GRID_SIZE]; GRID_SIZE]) {
+    pub fn place_ships_event_listener(
+        &mut self,
+        x: f32,
+        y: f32,
+        x_pos: f32,
+        y_pos: f32,
+        grid: &mut [[CellState; GRID_SIZE]; GRID_SIZE],
+    ) {
         let col = ((x - x_pos) / CELL_SIZE) as usize;
         let row = ((y - y_pos) / CELL_SIZE) as usize;
+
+        println!("Mouse click at: ({}, {})", x, y);
+        println!("Calculated grid cell: row = {}, col = {}", row, col);
+
         if row < GRID_SIZE && col < GRID_SIZE {
             if self.placing_ships {
                 if self.current_ship_index < SHIP_SIZES.len() {
@@ -93,8 +105,6 @@ impl BattleshipGame {
 
         Ok(())
     }
-
-
 
     pub fn display_grid(grid: &[[CellState; GRID_SIZE]; GRID_SIZE], x_pos: f32, y_pos: f32, canvas: &mut Canvas, ctx: &mut Context) -> GameResult {
 
@@ -151,9 +161,6 @@ impl Gameplay {
         // ?????  
     }
 
-    
-
-    
     pub fn start() {
 
         let mut quit: bool = false;
@@ -172,29 +179,16 @@ impl Gameplay {
 
                 // Check for win and then update "win" variable.
 
-
                 if (win) {
                     break;
                 }
                 // Switch Truns
             }
 
-
-
-
-
             // Play again? (Ask user for input)
             if (quit) {
                 break;
             }
-
-            
-
-
-
         }
-
     }
-    
-
 }

@@ -36,7 +36,7 @@ pub const TITLE_BAR: &str = "Battleship";
 
 // Window Set Up
 
-const SCREEN_SCALE: f32 = 1.0;
+const SCREEN_SCALE: f32 = 0.5;
 pub const BACKGROUND_COLOR: Color = RAISIN_BLACK;
 
 pub const GAME_WINDOW: WindowMode = WindowMode {

@@ -1,3 +1,5 @@
+// Kelson Gneiting
+
 use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler, MouseButton};
 use ggez::graphics::{self, Color, DrawMode, DrawParam, Mesh, MeshBuilder, PxScale, Rect, Text, TextFragment, FontData};
@@ -35,7 +37,13 @@ impl EventHandler for BattleshipGame {
 
     fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: MouseButton, x: f32, y: f32) -> GameResult<()> {
         if button == MouseButton::Left {
-            // self.place_ships_event_listener(x, y);
+            // Extract mutable references to avoid borrowing `self` multiple times
+            let player_grid = &mut self.player_grid;
+            let x_delta = constants::X_DELTA;
+            let y_delta = constants::Y_DELTA;
+
+            // Call the event listener with the extracted references
+            self.place_ships_event_listener(x, y, x_delta, y_delta, player_grid);
         }
         Ok(())
     }
